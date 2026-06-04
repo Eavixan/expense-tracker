@@ -160,29 +160,4 @@ Example:
 ]
 ```
 
-## What I Learned
-
-While building this project, I practiced:
-
-- Creating a command-line application
-- Using Python's argparse module
-- Reading and writing JSON files
-- Working with lists and dictionaries
-- Adding, updating, and deleting data
-- Handling user input and basic errors
-- Using Git and GitHub to track progress
-
-## Future Improvements
-
-Possible features to add later:
-
-- Expense categories
-- Filter expenses by category
-- Monthly budget limits
-- Warning when budget is exceeded
-- Export expenses to a CSV file
-- Better table formatting for the list command
-
-## Status
-
-Core project completed.
+https://roadmap.sh/projects/expense-tracker
