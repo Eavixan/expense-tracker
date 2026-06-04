@@ -1,6 +1,7 @@
 import argparse
 import json
 import os
+from datetime import date
 
 def load_expenses(): # this function will load the expenses from a file called "expenses.json"
     if not os.path.exists("expenses.json"): # if the file does not exist, return an empty list
@@ -44,6 +45,7 @@ def main():
         
         expense = {
             "id": new_id,
+            "date": str(date.today()),
             "description": args.description,
             "amount": args.amount
         }
@@ -57,7 +59,7 @@ def main():
         expenses = load_expenses() # load the existing expenses from the file
         print("Expenses:")
         for expense in expenses:
-            print(f"  ID: {expense['id']}, Description: {expense['description']}, Amount: ${expense['amount']:.2f}")
+            print(f"  ID: {expense['id']}, Date: {expense.get('date', 'N/A')}, Description: {expense['description']}, Amount: ${expense['amount']:.2f}")
 
     elif args.command == "summary": # if the user typed "summary" as the command
         expenses = load_expenses()  # load the existing expenses from the file

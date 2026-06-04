@@ -3,5 +3,11 @@
         "id": 1,
         "description": "Lunch",
         "amount": 20.0
+    },
+    {
+        "id": 2,
+        "date": "2026-06-04",
+        "description": "Coffee",
+        "amount": 5.0
     }
 ]
