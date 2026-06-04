@@ -27,6 +27,9 @@ def main():
 
     summary_parser = subparsers.add_parser("summary") # create a subparser for the "summary" command
 
+    delete_parser = subparsers.add_parser("delete") # create a subparser for the "delete" command
+    delete_parser.add_argument("--id", required=True, type=int) # add an argument for
+    
     args = parser.parse_args() # look what the user typed in the command line and make it available as "args"
                                # understand it using the rules i gave you
                                # store the results in a variable called "args"
@@ -63,6 +66,20 @@ def main():
         for expense in expenses:
             total = total + expense["amount"] # add up the amounts of all the expenses to get the total
         print(f"Total expenses: ${total:.2f}") # print the total expenses in a formatted way with 2 decimal places
+
+    elif args.command == "delete": # if the user typed "delete" as the command
+        expenses = load_expenses()  # load the existing expenses from the file
+        expense_to_delete = None # initialize a variable to keep track of the expense that we want to delete, start with None (no expense found yet)
+        for expense in expenses: 
+            if expense["id"] == args.id: # check if the id of the current expense matches the id provided by the user in the command line
+                expense_to_delete = expense # if we find a match, store that expense in the variable "expense_to_delete" and
+                break
+        if expense_to_delete: # if we found an expense to delete (the variable is not None)
+            expenses.remove(expense_to_delete) # remove that expense from the list of expenses
+            save_expenses(expenses) # save the updated list of expenses back to the file
+            print(f"Expense deleted successfully (ID: {args.id})")
+        else:
+            print(f"Expense with ID {args.id} not found.") # if we did not find an expense with the given id, print a message saying it was not found
 
 if __name__ == "__main__":
     main()
