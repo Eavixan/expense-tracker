@@ -32,6 +32,11 @@ def main():
     delete_parser = subparsers.add_parser("delete") # create a subparser for the "delete" command
     delete_parser.add_argument("--id", required=True, type=int) # add an argument for
     
+    update_parser = subparsers.add_parser("update") # create a subparser for the "update" command
+    update_parser.add_argument("--id", required=True, type=int) # add an argument for the id of the expense to update, make it required and convert it to an integer
+    update_parser.add_argument("--description") # add an optional argument for the new description of the expense
+    update_parser.add_argument("--amount", type=float) # add an optional argument for the new amount of the expense, convert it to a float
+    
     args = parser.parse_args() # look what the user typed in the command line and make it available as "args"
                                # understand it using the rules i gave you
                                # store the results in a variable called "args"
@@ -89,6 +94,26 @@ def main():
             print(f"Expense deleted successfully (ID: {args.id})")
         else:
             print(f"Expense with ID {args.id} not found.") # if we did not find an expense with the given id, print a message saying it was not found
+
+    elif args.command == "update": # if the user typed "update" as the command
+        expenses = load_expenses()  # load the existing expenses from the file
+
+        expense_found = False # initialize a variable to keep track of whether we found the expense to update, start with False (not found yet)
+
+        for expense in expenses:
+            if expense["id"] == args.id: # check if the id of the current expense matches the id provided by the user in the command line
+                if args.description: # if the user provided a new description for the expense
+                    expense["description"] = args.description # update the description of that expense with the new value provided by the user
+                if args.amount is not None: # if the user provided a new amount for the expense (check for None to allow updating to 0)
+                    expense["amount"] = args.amount # update the amount of that expense with the new value provided by the user
+                expense_found = True # set the variable to True to indicate that we found and updated the expense
+                break
+
+        if expense_found:
+            save_expenses(expenses) # save the updated list of expenses back to the file
+            print(f"Expense updated successfully (ID: {args.id})")
+        else:
+            print(f"Expense with ID {args.id} not found.")
 
 if __name__ == "__main__":
     main()
