@@ -25,6 +25,8 @@ def main():
     
     list_parser = subparsers.add_parser("list") # create a subparser for the "list" command
 
+    summary_parser = subparsers.add_parser("summary") # create a subparser for the "summary" command
+
     args = parser.parse_args() # look what the user typed in the command line and make it available as "args"
                                # understand it using the rules i gave you
                                # store the results in a variable called "args"
@@ -49,10 +51,18 @@ def main():
         print(f"Expense added successfully (ID: {new_id})")
 
     elif args.command == "list": # if the user typed "list" as the command
-        expenses = load_expenses()
+        expenses = load_expenses() # load the existing expenses from the file
         print("Expenses:")
         for expense in expenses:
             print(f"  ID: {expense['id']}, Description: {expense['description']}, Amount: ${expense['amount']:.2f}")
+
+    elif args.command == "summary": # if the user typed "summary" as the command
+        expenses = load_expenses()  # load the existing expenses from the file
+
+        total = 0
+        for expense in expenses:
+            total = total + expense["amount"] # add up the amounts of all the expenses to get the total
+        print(f"Total expenses: ${total:.2f}") # print the total expenses in a formatted way with 2 decimal places
 
 if __name__ == "__main__":
     main()
