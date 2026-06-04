@@ -44,6 +44,10 @@ def main():
     if args.command == "add": # if the user typed "add" as the command
         expenses = load_expenses() # load the existing expenses from the file  
         
+        if args.amount < 0: # if the user provided a negative amount for the expense, print an error message and exit the program
+            print("Error: Amount cannot be negative.")
+            return
+        
         if len(expenses) == 0: # if there are no expenses in the list, start the id from 1
             new_id = 1
         else:
@@ -98,6 +102,10 @@ def main():
     elif args.command == "update": # if the user typed "update" as the command
         expenses = load_expenses()  # load the existing expenses from the file
 
+        if args.amount is not None and args.amount < 0: # if the user provided a new amount for the expense and it is negative, print an error message and exit the program
+            print("Error: Amount cannot be negative.")
+            return
+        
         expense_found = False # initialize a variable to keep track of whether we found the expense to update, start with False (not found yet)
 
         for expense in expenses:
