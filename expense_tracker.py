@@ -27,6 +27,7 @@ def main():
     list_parser = subparsers.add_parser("list") # create a subparser for the "list" command
 
     summary_parser = subparsers.add_parser("summary") # create a subparser for the "summary" command
+    summary_parser.add_argument("--month", type=int) # add an optional argument for the month to filter the expenses by month, convert it to an integer
 
     delete_parser = subparsers.add_parser("delete") # create a subparser for the "delete" command
     delete_parser.add_argument("--id", required=True, type=int) # add an argument for
@@ -63,11 +64,17 @@ def main():
 
     elif args.command == "summary": # if the user typed "summary" as the command
         expenses = load_expenses()  # load the existing expenses from the file
-
-        total = 0
-        for expense in expenses:
-            total = total + expense["amount"] # add up the amounts of all the expenses to get the total
-        print(f"Total expenses: ${total:.2f}") # print the total expenses in a formatted way with 2 decimal places
+        total = 0.0
+        if args.month: # if the user provided a month to filter by
+            for expense in expenses:
+                expense_month = int(expense.get("date", "0000-00-00").split("-")[1]) # get the month from the date of the expense, if the date is not available, use "0000-00-00" as a default value to avoid errors
+                if expense_month == args.month: # if the month of the expense matches the month provided by the user
+                    total += expense["amount"] # add the amount of that expense to the total
+            print(f"Total expenses for month {args.month}: ${total:.2f}")
+        else: # if the user did not provide a month, calculate the total for all expenses
+            for expense in expenses:
+                total += expense["amount"] # add the amount of each expense to the total
+            print(f"Total expenses: ${total:.2f}")
 
     elif args.command == "delete": # if the user typed "delete" as the command
         expenses = load_expenses()  # load the existing expenses from the file

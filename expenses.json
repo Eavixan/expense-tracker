@@ -1,6 +1,7 @@
 [
     {
         "id": 1,
+        "date": "2026-06-04",
         "description": "Lunch",
         "amount": 20.0
     },
