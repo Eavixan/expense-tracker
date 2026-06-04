@@ -23,6 +23,7 @@ def main():
     add_parser.add_argument("--description", required=True) # add an argument for the description of the expense, make it required
     add_parser.add_argument("--amount", required=True, type=float) # add an argument for the amount of the expense, make it required and convert it to a float
     
+    list_parser = subparsers.add_parser("list") # create a subparser for the "list" command
 
     args = parser.parse_args() # look what the user typed in the command line and make it available as "args"
                                # understand it using the rules i gave you
@@ -42,10 +43,16 @@ def main():
             "amount": args.amount
         }
 
-        expenses.append(expense)
-        save_expenses(expenses)
+        expenses.append(expense) # add the new expense to the list of expenses
+        save_expenses(expenses) # save the updated list of expenses back to the file
 
         print(f"Expense added successfully (ID: {new_id})")
+
+    elif args.command == "list": # if the user typed "list" as the command
+        expenses = load_expenses()
+        print("Expenses:")
+        for expense in expenses:
+            print(f"  ID: {expense['id']}, Description: {expense['description']}, Amount: ${expense['amount']:.2f}")
 
 if __name__ == "__main__":
     main()
